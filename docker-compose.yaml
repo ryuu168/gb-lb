@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+
+ gb_lb_play:
+   # このファイルと同じフォルダーのDockerfileを使う
+   build: ./dockerfiles/gb_lb/
+
+   links:
+     - 'gb_lb_mysql:gb_lb_mysql'
+
+   volumes:
+     - .:/app
+   # コンテナ名を指定する
+   container_name: gb_lb_play
+
+   ports:
+     - '9000:9000'
+
+ gb_lb_mysql:
+   image: mysql
+   #再起動してくれる
+   restart: always
+
+   #マウント（ホスト側パス（相対）：コンテナ内パス）
+   volumes:
+     - ./dockerfiles/mysql/conf.d:/etc/mysql/conf.d
+     - ./dockerfiles/mysql/initsql:/docker-entrypoint-initdb.d
+
+   environment:
+     - MYSQL_ROOT_PASSWORD=1Qaxsw2#
+   ports:
+     - '3306:3306'
+
+
+
+
+
+
+
+#version: '3'
+#
+#services:
+#
+# gb_lb_play:
+#   # このファイルと同じフォルダーのDockerfileを使う
+#   build: ./dockerfiles/gb_lb/
+#
+#   links:
+#        - 'gb_lb_mysql:gb_lb_mysql'
+#
+#   volumes:
+#     - .:/app
+#   # コンテナ名を指定する
+#   container_name: gb_lb_play
+#
+#   ports:
+#     - '9100:9000'
+#
+#      gb_lb_mysql:
+#
+#      image: mysql
+#    #再起動してくれる
+#   restart: always
+#
+#    #マウント（ホスト側パス（相対）：コンテナ内パス）
+#   volumes:
+#     - ./dockerfiles/mysql/conf.d:/etc/mysql/conf.d
+#     - ./dockerfiles/mysql/initsql:/docker-entrypoint-initdb.d
+#
+#   environment:
+#     - MYSQL_ROOT_PASSWORD=1Qaxsw2#
+#
+#   ports:
+#     - '3306:3306'
